@@ -1,0 +1,14 @@
+# Terraform
+.terraform/
+.terraform.lock.hcl
+terraform.tfstate
+terraform.tfstate.backup
+
+# SSH / Runner keys
+gitlab-runner.pem
+gitlab-runner.pub
+*.pem
+*.key
+
+# OS / misc
+.DS_Store
