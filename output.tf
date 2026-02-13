@@ -1,6 +1,6 @@
 output "aws_vpc" {
   value = aws_vpc.main.id
-  
+
 }
 output "public_subnet" {
   value = aws_subnet.public_subnet.id
@@ -36,9 +36,9 @@ output "ec2_private_instance" {
   value = aws_instance.private_instance.id
 }
 output "ec2_public_instance_ip" {
-    value = aws_instance.public_instance.public_ip
-  
+  value = aws_instance.public_instance.public_ip
+
 }
 output "ec2_private_instance_ip" {
-    value = aws_instance.private_instance.private_ip
+  value = aws_instance.private_instance.private_ip
 }
