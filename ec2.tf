@@ -59,21 +59,69 @@ resource "aws_instance" "public_instance" {
   ami             = var.ami_id
   instance_type   = var.instance_type
   subnet_id       = aws_subnet.public_subnet.id
-  security_groups = [aws_security_group.public_sg.id]
+  vpc_security_group_ids  = [aws_security_group.public_sg.id]
   key_name        = aws_key_pair.my_key.key_name
   tags = {
     Name        = "${var.Name}-public-instance"
     Environment = var.Environment
   }
 }
-resource "aws_instance" "private_instance" {
-  ami             = var.ami_id
-  instance_type   = var.instance_type
-  subnet_id       = aws_subnet.private_subnet.id
-  security_groups = [aws_security_group.private_sg.id]
-  key_name        = aws_key_pair.my_key.key_name
+# resource "aws_instance" "private_instance" {
+#   ami             = var.ami_id
+#   instance_type   = var.instance_type
+#   subnet_id       = aws_subnet.private_subnet.id
+#   security_groups = [aws_security_group.private_sg.id]
+#   key_name        = aws_key_pair.my_key.key_name
+#   tags = {
+#     Name        = "${var.Name}-private-instance"
+#     Environment = var.Environment
+#   }
+# }
+
+resource "aws_ebs_volume" "public_volume" {
+  availability_zone = aws_instance.public_instance.availability_zone
+  size              = 10
   tags = {
-    Name        = "${var.Name}-private-instance"
+    Name        = "${var.Name}-public-volume"
     Environment = var.Environment
   }
+  
+}
+
+resource "aws_volume_attachment" "public_volume_attachment" {
+  device_name = "/dev/sdf"
+  volume_id   = aws_ebs_volume.public_volume.id
+  instance_id = aws_instance.public_instance.id
+}
+
+resource "aws_ebs_volume" "public_volume1" {
+  availability_zone = aws_instance.public_instance.availability_zone
+  size              = 12
+  tags = {
+    Name        = "${var.Name}-public-volume1"
+    Environment = var.Environment
+  }
+  
+}
+
+resource "aws_volume_attachment" "public_volume1_attachment" {
+  device_name = "/dev/sdg"
+  volume_id   = aws_ebs_volume.public_volume1.id
+  instance_id = aws_instance.public_instance.id
+}
+
+resource "aws_ebs_volume" "public_volume2" {
+  availability_zone = aws_instance.public_instance.availability_zone
+  size              = 14
+  tags = {
+    Name        = "${var.Name}-public-volume2"
+    Environment = var.Environment
+  }
+  
+}
+
+resource "aws_volume_attachment" "public_volume2_attachment" {
+  device_name = "/dev/sdh"
+  volume_id   = aws_ebs_volume.public_volume2.id
+  instance_id = aws_instance.public_instance.id
 }

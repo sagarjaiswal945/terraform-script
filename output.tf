@@ -32,13 +32,13 @@ output "private_security_group" {
 output "ec2_public_instance" {
   value = aws_instance.public_instance.id
 }
-output "ec2_private_instance" {
-  value = aws_instance.private_instance.id
-}
+# output "ec2_private_instance" {
+#   value = aws_instance.private_instance.id
+# }
 output "ec2_public_instance_ip" {
   value = aws_instance.public_instance.public_ip
 
 }
-output "ec2_private_instance_ip" {
-  value = aws_instance.private_instance.private_ip
-}
+# output "ec2_private_instance_ip" {
+#   value = aws_instance.private_instance.private_ip
+# }
