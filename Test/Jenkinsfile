@@ -1,0 +1,44 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('code clone') {
+            steps {
+                echo 'Cloning repository...'
+                // Add your code cloning steps here
+                git url: 'https://github.com/sagarjaiswal945/two-tier-flask-app.git', branch: 'master'
+            }
+        }
+        stage('Build') {
+            steps {
+                echo 'Building...'
+                // Add your build steps here
+                sh "docker build -t flask-app ."
+            }
+        }
+        stage('Push') {
+            steps {
+                echo 'Pushing to Docker Hub...'
+                // Add your Docker Hub push steps here
+                withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_PASSWORD')]) {
+                    sh "echo $DOCKERHUB_PASSWORD | docker login -u $DOCKERHUB_USERNAME --password-stdin"
+                    sh "docker tag flask-app:latest $DOCKERHUB_USERNAME/flask-app:latest"
+                    sh "docker push $DOCKERHUB_USERNAME/flask-app:latest"
+                }
+            }
+        }
+        stage('Test') {
+            steps {
+                echo 'Testing...'
+                // Add your test steps here
+            }
+        }
+        stage('Deploy') {
+            steps {
+                echo 'Deploying...'
+                // Add your deploy steps here
+                sh "docker compose up -d" // Assuming you have a docker-compose.yml file for deployment
+            }
+        }
+    }
+}
